@@ -1,0 +1,89 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &226431321597960957
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 226431321597960958}
+  - component: {fileID: 226431321597960959}
+  - component: {fileID: 226431321597960928}
+  m_Layer: 0
+  m_Name: SoundEffectPlayer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &226431321597960958
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 226431321597960957}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &226431321597960959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 226431321597960957}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d06a1d2e32855d84d902da7ba13d8609, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  masterVolume: 1
+  audioClipRegistry:
+    audioClips:
+    - audioClip: {fileID: 8300000, guid: cb70c1770b6aa3341b20351768efadcd, type: 3}
+      alias: Bubbles
+      volume: 0.2
+      playsWithDelay: 0
+      delay: 0
+    - audioClip: {fileID: 8300000, guid: b7e61ba38378ea049b8bdf58f35b7c3f, type: 3}
+      alias: Damaged
+      volume: 0.4
+      playsWithDelay: 0
+      delay: 0
+    - audioClip: {fileID: 8300000, guid: 9ec5350a4addbb347bd5befef92bdbb7, type: 3}
+      alias: Healed
+      volume: 0.6
+      playsWithDelay: 0
+      delay: 0
+    - audioClip: {fileID: 8300000, guid: b45fdbaec91951f4192b536b504319ae, type: 3}
+      alias: Hellstorm
+      volume: 0.8
+      playsWithDelay: 0
+      delay: 0
+--- !u!114 &226431321597960928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 226431321597960957}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0127f5e7e9d96864b984920e23949664, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSourceConfig:
+    playOnAwake: 0
+    loop: 0
+    rolloffMode: 0
+    minDistance: 1
+    maxDistance: 500
+    outputAudioMixerGroup: {fileID: 0}

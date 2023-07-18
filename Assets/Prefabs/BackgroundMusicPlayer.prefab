@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1880252377113592346
+--- !u!1 &2760118199708839941
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,23 +8,23 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1880252377113592345}
-  - component: {fileID: 1880252377113592344}
-  - component: {fileID: 1880252377113592327}
+  - component: {fileID: 2760118199708839942}
+  - component: {fileID: 2760118199708839943}
+  - component: {fileID: 2760118199708839960}
   m_Layer: 0
-  m_Name: AudioPlayer
+  m_Name: BackgroundMusicPlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1880252377113592345
+--- !u!4 &2760118199708839942
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1880252377113592346}
+  m_GameObject: {fileID: 2760118199708839941}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -33,13 +33,13 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1880252377113592344
+--- !u!114 &2760118199708839943
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1880252377113592346}
+  m_GameObject: {fileID: 2760118199708839941}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d06a1d2e32855d84d902da7ba13d8609, type: 3}
@@ -48,18 +48,28 @@ MonoBehaviour:
   masterVolume: 1
   audioClipRegistry:
     audioClips:
-    - audioClip: {fileID: 0}
-      alias: 
-      volume: 0
-      playsWithDelay: 0
-      delay: 0
---- !u!114 &1880252377113592327
+    - audioClip: {fileID: 8300000, guid: 1bbfe1cf268073e498351db112facce4, type: 3}
+      alias: Cave
+      volume: 1
+      playsWithDelay: 1
+      delay: 0.1
+    - audioClip: {fileID: 8300000, guid: ca29b5ff4f602b542830f661b6eb567f, type: 3}
+      alias: Dungeon
+      volume: 0.5
+      playsWithDelay: 1
+      delay: 0.5
+    - audioClip: {fileID: 8300000, guid: a8d0bc8fcd9378142b8eec3b6eb3f3ab, type: 3}
+      alias: Sea
+      volume: 0.25
+      playsWithDelay: 1
+      delay: 1
+--- !u!114 &2760118199708839960
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1880252377113592346}
+  m_GameObject: {fileID: 2760118199708839941}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0127f5e7e9d96864b984920e23949664, type: 3}
@@ -67,7 +77,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioSourceConfig:
     playOnAwake: 0
-    loop: 0
+    loop: 1
     rolloffMode: 0
     minDistance: 1
     maxDistance: 500
