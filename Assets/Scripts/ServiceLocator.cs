@@ -1,3 +1,4 @@
+using UnityAudioPlayer.Audio;
 using UnityEngine;
 
 public class ServiceLocator : MonoBehaviour

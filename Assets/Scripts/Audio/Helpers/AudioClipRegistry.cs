@@ -2,60 +2,63 @@ using System;
 using System.Linq;
 using UnityEngine;
 
-[Serializable]
-public class AudioClipRegistry
+namespace UnityAudioPlayer.Audio.Helpers
 {
-    [SerializeField]
-    private ConfigurableAudioClip[] audioClips;
-
-    private Logger logger = new Logger();
-
-    private ConfigurableAudioClip GetAudioClipByAlias(string audioClipAlias)
+    [Serializable]
+    public class AudioClipRegistry
     {
-        return audioClips.FirstOrDefault(clip => clip.alias == audioClipAlias);
-    }
+        [SerializeField]
+        private ConfigurableAudioClip[] audioClips;
 
-    private ConfigurableAudioClip GetAudioClipByName(string audioClipName)
-    {
-        return audioClips.FirstOrDefault(clip => clip.audioClip.name == audioClipName);
-    }
+        private Logger logger = new Logger();
 
-    public ConfigurableAudioClip GetAudioClip(string aliasOrName)
-    {
-        if (string.IsNullOrEmpty(aliasOrName))
+        private ConfigurableAudioClip GetAudioClipByAlias(string audioClipAlias)
         {
-            logger.LogNoAliasOrNameProvided();
-            return null;
+            return audioClips.FirstOrDefault(clip => clip.alias == audioClipAlias);
         }
 
-        ConfigurableAudioClip configAudioClip = this.GetAudioClipByAlias(aliasOrName);
-
-        if (configAudioClip == null)
+        private ConfigurableAudioClip GetAudioClipByName(string audioClipName)
         {
-            configAudioClip = GetAudioClipByName(aliasOrName);
+            return audioClips.FirstOrDefault(clip => clip.audioClip.name == audioClipName);
+        }
+
+        public ConfigurableAudioClip GetAudioClip(string aliasOrName)
+        {
+            if (string.IsNullOrEmpty(aliasOrName))
+            {
+                logger.LogNoAliasOrNameProvided();
+                return null;
+            }
+
+            ConfigurableAudioClip configAudioClip = this.GetAudioClipByAlias(aliasOrName);
 
             if (configAudioClip == null)
             {
-                logger.LogNoAudioClipError(aliasOrName);
+                configAudioClip = GetAudioClipByName(aliasOrName);
+
+                if (configAudioClip == null)
+                {
+                    logger.LogNoAudioClipError(aliasOrName);
+                    return null;
+                }
+            }
+
+            if (audioClips.Count(clip => clip.alias == aliasOrName) > 1)
+            {
+                logger.LogMultipleAudioClipsError(aliasOrName);
                 return null;
             }
+
+            return configAudioClip;
         }
 
-        if (audioClips.Count(clip => clip.alias == aliasOrName) > 1)
+        public void ChangeClipVolume(string aliasOrName, float newVolume)
         {
-            logger.LogMultipleAudioClipsError(aliasOrName);
-            return null;
+            ConfigurableAudioClip configurableAudioClip = GetAudioClip(aliasOrName);
+
+            if (configurableAudioClip == null) return;
+
+            configurableAudioClip.volume = Mathf.Clamp01(newVolume);
         }
-
-        return configAudioClip;
-    }
-
-    public void ChangeClipVolume(string aliasOrName, float newVolume)
-    {
-        ConfigurableAudioClip configurableAudioClip = GetAudioClip(aliasOrName);
-
-        if (configurableAudioClip == null) return;
-
-        configurableAudioClip.volume = Mathf.Clamp01(newVolume);
     }
 }
