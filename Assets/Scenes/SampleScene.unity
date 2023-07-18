@@ -263,6 +263,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1412226382}
   - component: {fileID: 1412226383}
+  - component: {fileID: 1412226384}
   m_Layer: 0
   m_Name: SoundEffectPlayer
   m_TagString: Untagged
@@ -297,13 +298,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d06a1d2e32855d84d902da7ba13d8609, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  soundEffects:
-  - audioClip: {fileID: 0}
-    volume: 0
-    playWithDelay: 0
-    delay: 0
-  audioSourceCount: 5
-  soundEffectsVolume: 1
+  masterVolume: 1
+  audioClipRegistry:
+    audioClips:
+    - audioClip: {fileID: 0}
+      alias: 
+      volume: 0
+      playsWithDelay: 0
+      delay: 0
+--- !u!114 &1412226384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1412226381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0127f5e7e9d96864b984920e23949664, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   audioSourceConfig:
     playOnAwake: 0
     loop: 0

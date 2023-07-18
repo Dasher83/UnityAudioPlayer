@@ -1,117 +1,47 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class AudioPlayer : MonoBehaviour
 {
-    private const int INITIAL_AUDIO_SOURCE_COUNT = 2;
     private const float DEFAULT_VOLUME = 1f;
-    private const float AUDIO_SOURCE_IDLE_SECONDS = 60f;
-    private const float CLEANUP_INTERVAL_SECONDS = 30f;
 
-    private const string NO_AUDIO_CLIP_ERROR_TEMPLATE = "No AudioClip found {0} with the alias or clip name: ";
-    private const string MULTIPLE_AUDIO_CLIPS_ERROR_TEMPLATE = "Multiple ConfigurableAudioClips found with the same alias: ";
-
-    [Tooltip("Configurable Audio Clips to play")]
-    [SerializeField]
-    private ConfigurableAudioClip[] audioClips;
-
-    [Space]
     [Range(0f, 1f)]
     [SerializeField]
-    private float volume = DEFAULT_VOLUME;
+    private float masterVolume = DEFAULT_VOLUME;
 
     [Space]
-    [Tooltip("Configuration for the Audio Sources")]
-    [SerializeField] private AudioSourceConfig audioSourceConfig;
+    [Tooltip("Registry of Configurable Audio Clips to play")]
+    [SerializeField]
+    private AudioClipRegistry audioClipRegistry;
 
-    private List<CleanableAudioSource> cleanableAudioSources;
-
-    private void Awake()
-    {
-        cleanableAudioSources = new List<CleanableAudioSource>();
-
-        for (int i = 0; i < INITIAL_AUDIO_SOURCE_COUNT; i++)
-        {
-            AudioSource audioSource = gameObject.AddComponent<AudioSource>();
-            ConfigureAudioSource(audioSource);
-            cleanableAudioSources.Add(
-                new CleanableAudioSource
-                {
-                    audioSource = audioSource,
-                    lastStoppedTime = Time.time
-                });
-        }
-    }
+    private AudioSourcePool audioSourcePool;
+    private Logger logger = new Logger();
 
     private void Start()
     {
-        StartCoroutine(CleanupCoroutine());
+        audioSourcePool = GetComponent<AudioSourcePool>();
     }
 
-    private void ConfigureAudioSource(AudioSource audioSource)
+    public float MasterVolume
     {
-        audioSource.playOnAwake = audioSourceConfig.playOnAwake;
-        audioSource.loop = audioSourceConfig.loop;
-        audioSource.rolloffMode = audioSourceConfig.rolloffMode;
-        audioSource.minDistance = audioSourceConfig.minDistance;
-        audioSource.maxDistance = audioSourceConfig.maxDistance;
-        audioSource.outputAudioMixerGroup = audioSourceConfig.outputAudioMixerGroup;
-        // Apply more configuration options as needed
-    }
-
-    public float Volume
-    {
-        get { return volume; }
-        set { volume = Mathf.Clamp01(value); }
+        get { return masterVolume; }
+        set { masterVolume = Mathf.Clamp01(value); }
     }
 
     public void Play(string audioClipAlias)
     {
-        if (string.IsNullOrEmpty(audioClipAlias))
+        ConfigurableAudioClip configurableAudioClip = audioClipRegistry.GetAudioClip(audioClipAlias);
+
+        CleanableAudioSource freeCleanableSource = audioSourcePool.GetFreeAudioSource();
+
+        freeCleanableSource.audioSource.clip = configurableAudioClip.audioClip;
+        freeCleanableSource.audioSource.volume = MasterVolume * configurableAudioClip.volume;
+
+        if (configurableAudioClip.playsWithDelay)
         {
-            Debug.LogError("No alias provided. Cannot play AudioClip.");
-            return;
-        }
-
-        ConfigurableAudioClip configAudioClip = audioClips.FirstOrDefault(clip => clip.alias == audioClipAlias);
-
-        if (configAudioClip == null)
-        {
-            configAudioClip = audioClips.FirstOrDefault(clip => clip.audioClip.name == audioClipAlias);
-
-            if (configAudioClip == null)
-            {
-                Debug.LogError("No ConfigurableAudioClip found with the alias or clip name: " + audioClipAlias);
-                return;
-            }
-        }
-
-        if (audioClips.Count(clip => clip.alias == audioClipAlias) > 1)
-        {
-            LogMultipleAudioClipsError(audioClipAlias);
-            return;
-        }
-
-        CleanableAudioSource freeCleanableSource = cleanableAudioSources
-            .FirstOrDefault(cleanableSource => cleanableSource.audioSource.isPlaying == false);
-
-        if (freeCleanableSource == null)
-        {
-            AudioSource audioSource = gameObject.AddComponent<AudioSource>();
-            ConfigureAudioSource(audioSource);
-            freeCleanableSource = new CleanableAudioSource { audioSource = audioSource, lastStoppedTime = Time.time };
-            cleanableAudioSources.Add(freeCleanableSource);
-        }
-
-        freeCleanableSource.audioSource.clip = configAudioClip.audioClip;
-        freeCleanableSource.audioSource.volume = Volume * configAudioClip.volume;
-
-        if (configAudioClip.playWithDelay)
-        {
-            StartCoroutine(PlayWithDelay(freeCleanableSource.audioSource, configAudioClip.delay));
+            StartCoroutine(PlayWithDelay(freeCleanableSource.audioSource, configurableAudioClip.delay));
         }
         else
         {
@@ -125,12 +55,27 @@ public class AudioPlayer : MonoBehaviour
         audioSource.Play();
     }
 
-    public void Stop()
+    public void Stop(string audioClipAlias)
     {
-        foreach (CleanableAudioSource cleanableAudioSource in cleanableAudioSources)
+        CleanableAudioSource playingAudioSource = GetPlayingAudioSource(audioClipAlias);
+
+        if (playingAudioSource != null)
         {
-            cleanableAudioSource.audioSource.Stop();
-            cleanableAudioSource.lastStoppedTime = Time.time;
+            playingAudioSource.audioSource.Stop();
+            playingAudioSource.lastStoppedTime = Time.time;
+        }
+        else
+        {
+            logger.LogNoAudioClipError(audioClipAlias, state: "playing");
+        }
+    }
+
+    public void StopAll()
+    {
+        foreach (CleanableAudioSource playingAudioSource in audioSourcePool.GetPlayingAudioSources())
+        {
+            playingAudioSource.audioSource.Stop();
+            playingAudioSource.lastStoppedTime = Time.time;
         }
     }
 
@@ -144,7 +89,7 @@ public class AudioPlayer : MonoBehaviour
         }
         else
         {
-            LogNoAudioClipError(audioClipAlias, state: "playing");
+            logger.LogNoAudioClipError(audioClipAlias, state: "playing");
         }
     }
 
@@ -158,76 +103,40 @@ public class AudioPlayer : MonoBehaviour
         }
         else
         {
-            LogNoAudioClipError(audioClipAlias, state: "paused");
+            logger.LogNoAudioClipError(audioClipAlias, state: "paused");
         }
     }
 
     private CleanableAudioSource GetPlayingAudioSource(string audioClipAlias)
     {
-        return cleanableAudioSources.FirstOrDefault(source =>
-            source.audioSource.isPlaying &&
-            (source.audioSource.clip.name == audioClipAlias ||
-            audioClips.FirstOrDefault(clip => clip.alias == audioClipAlias && clip.audioClip == source.audioSource.clip) != null)
-        );
+        ConfigurableAudioClip clip = audioClipRegistry.GetAudioClip(audioClipAlias);
+
+        return audioSourcePool
+            .GetPlayingAudioSources()
+            .FirstOrDefault(source => source.audioSource.clip == clip.audioClip);
     }
 
     private CleanableAudioSource GetPausedAudioSource(string audioClipAlias)
     {
-        return cleanableAudioSources.FirstOrDefault(source =>
-            !source.audioSource.isPlaying &&
-            source.audioSource.clip != null &&
-            (source.audioSource.clip.name == audioClipAlias ||
-            audioClips.FirstOrDefault(clip => clip.alias == audioClipAlias && clip.audioClip == source.audioSource.clip) != null)
-        );
+        ConfigurableAudioClip clip = audioClipRegistry.GetAudioClip(audioClipAlias);
+
+        return audioSourcePool
+            .GetPausedAudioSources()
+            .FirstOrDefault(source => source.audioSource.clip == clip.audioClip);
     }
 
     public void ChangePlayingAudioClipVolume(string audioClipAlias, float newVolume)
     {
-        newVolume = Mathf.Clamp01(newVolume);
-
-        var playingSource = GetPlayingAudioSource(audioClipAlias);
+        CleanableAudioSource playingSource = GetPlayingAudioSource(audioClipAlias);
 
         if (playingSource != null)
         {
-            playingSource.audioSource.volume = newVolume;
+            playingSource.audioSource.volume = Mathf.Clamp01(newVolume);
+            audioClipRegistry.ChangeClipVolume(audioClipAlias, newVolume);
         }
         else
         {
-            Debug.LogError("No AudioClip found playing with the alias or clip name: " + audioClipAlias);
-        }
-    }
-
-    private void LogNoAudioClipError(string audioClipAlias, string state)
-    {
-        Debug.LogError(string.Format(NO_AUDIO_CLIP_ERROR_TEMPLATE, state) + audioClipAlias);
-    }
-
-    private void LogMultipleAudioClipsError(string audioClipAlias)
-    {
-        Debug.LogError(string.Format(MULTIPLE_AUDIO_CLIPS_ERROR_TEMPLATE) + audioClipAlias);
-    }
-
-    private void Cleanup()
-    {
-        for (int i = cleanableAudioSources.Count - 1; i >= 0; i--)
-        {
-            CleanableAudioSource audioSource = cleanableAudioSources[i];
-
-            if (!audioSource.audioSource.isPlaying && Time.time - audioSource.lastStoppedTime > AUDIO_SOURCE_IDLE_SECONDS)
-            {
-                Destroy(audioSource.audioSource);
-                cleanableAudioSources.RemoveAt(i);
-            }
-        }
-    }
-
-    private IEnumerator CleanupCoroutine()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(CLEANUP_INTERVAL_SECONDS);
-            Cleanup();
+            logger.LogNoAudioClipError(audioClipAlias, state: "playing");
         }
     }
 }
-

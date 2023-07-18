@@ -13,7 +13,7 @@ public class ConfigurableAudioClip
     [Range(0f, 1f)]
     public float volume = DEFAULT_VOLUME;
     [Tooltip("Play this AudioClip with delay or not.")]
-    public bool playWithDelay = false;
+    public bool playsWithDelay = false;
     [Tooltip("Seconds before playing this AudioClip. Value should be greater than or equal to 0.")]
     public float delay = DEFAULT_DELAY;
 
