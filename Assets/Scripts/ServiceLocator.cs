@@ -7,6 +7,9 @@ public class ServiceLocator : MonoBehaviour
     [SerializeField]
     private AudioPlayer soundEffectPlayer;
 
+    [SerializeField]
+    private AudioPlayer backgroundMusicPlayer;
+
     private void Awake()
     {
         if (Instance == null)
@@ -20,8 +23,7 @@ public class ServiceLocator : MonoBehaviour
         }
     }
 
-    public AudioPlayer GetSoundEffectPlayer()
-    {
-        return soundEffectPlayer;
-    }
+    public AudioPlayer SoundEffectPlayer => soundEffectPlayer;
+
+    public AudioPlayer BackgroundMusicPlayer => backgroundMusicPlayer;
 }
