@@ -1,0 +1,182 @@
+{
+    "name": "TestAudioInputs",
+    "maps": [
+        {
+            "name": "SoundEffects",
+            "id": "5e891259-c233-458d-831b-367cf3cd0c7b",
+            "actions": [
+                {
+                    "name": "SoundEffect_1",
+                    "type": "Button",
+                    "id": "2042b7b7-f7a1-46d5-8123-b816392a960b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SoundEffect_2",
+                    "type": "Button",
+                    "id": "89afd92e-1dd4-4361-8ce9-781ec2423dda",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SoundEffect_3",
+                    "type": "Button",
+                    "id": "17eabda4-4ce6-4383-b927-2653fce47eb6",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SoundEffect_4",
+                    "type": "Button",
+                    "id": "748a6b68-cb86-4c2f-b512-629a00ac3826",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "79903839-27e2-41f0-93d9-bbd03bd2bbf0",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SoundEffect_1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4020be4b-3f82-4f58-b101-f70ebf3ac5e6",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SoundEffect_2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5d37d152-96a8-45cf-9ab2-ea73113dbdba",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SoundEffect_3",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bc450d2a-e22d-41ca-9c25-e800056b6965",
+                    "path": "<Keyboard>/4",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SoundEffect_4",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "BackgroundMusic",
+            "id": "de89f3dd-7be2-4a8b-87ad-803bdc8acf78",
+            "actions": [
+                {
+                    "name": "BackgroundMusic_1",
+                    "type": "Button",
+                    "id": "b3296a11-4f73-47a2-ae0a-894453fc80ee",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "BackgroundMusic_2",
+                    "type": "Button",
+                    "id": "ff7e4991-25a2-43da-8020-55001943b9d1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "BackgroundMusic_3",
+                    "type": "Button",
+                    "id": "8590d8a2-af09-4971-9fe0-428a8ae1a4fd",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "BackgroundMusic_4",
+                    "type": "Button",
+                    "id": "ee462c11-3966-4b35-8f67-b9d9005bb6c8",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "c79db6be-694a-4469-929e-feeedc4fdd50",
+                    "path": "<Keyboard>/5",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BackgroundMusic_1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "35570527-6d2c-49a0-bd66-b2ff33963710",
+                    "path": "<Keyboard>/6",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BackgroundMusic_2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0122a30c-db02-4398-9fdc-3cb0e7cd60a1",
+                    "path": "<Keyboard>/7",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BackgroundMusic_3",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9028478f-756b-437d-8b0f-7692be6ce862",
+                    "path": "<Keyboard>/8",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BackgroundMusic_4",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
