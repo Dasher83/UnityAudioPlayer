@@ -14,17 +14,13 @@ This project provides a simple yet extensible audio player system for Unity game
 To use this system, follow these steps:
 
 1. Clone or download this repository.
-2. Import the scripts into your Unity project.
-3. Create an `AudioClipRegistry` and `AudioSourcePool` in your game. Use the Unity editor to add your sound files to the AudioClipRegistry and set up the AudioSourcePool.
-4. Use the `ServiceLocator` to access the `AudioPlayer` from your scripts.
+2. Import the assets into your Unity project.
+3. Add the `ServiceLocator` prefab to your scene and configure the `soundEffectPlayer` and `backgroundMusicPlayer` child objects to your liking.
 
 ## Testing
 
-For testing purposes, a `TestSounds` script is provided. This script plays a sound when a certain key is pressed.
-
-1. Attach the `TestSounds` script to a game object.
-2. In the Unity editor, assign the keys and corresponding audio clip aliases to the script.
-3. During gameplay, press the assigned keys to hear the associated sounds.
+For testing purposes, a `TestSounds` script is provided. This script plays a sound when a certain key is pressed. A prefab is provided.
+Use keys 1 to 4 for sound effects and 5 to 7 for background music.
 
 ## Usage
 
